@@ -1,2 +1,2 @@
 # cryptoutils
-Set of crypto utilities
+Set of crypto utilities for every day use.
