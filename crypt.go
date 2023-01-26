@@ -17,7 +17,6 @@ import (
 	"log"
 	"strings"
 
-	utils "github.com/vkuznet/ecm/utils"
 	"golang.org/x/crypto/nacl/secretbox"
 )
 
@@ -197,7 +196,7 @@ func GetCipher(cipher string) string {
 	if cipher == "" {
 		cipher = SupportedCiphers[0]
 	}
-	if !utils.InList(cipher, SupportedCiphers) {
+	if InList(cipher, SupportedCiphers) {
 		log.Fatalf(
 			"given cipher %s is not supported, please use one from the following %v",
 			cipher,
@@ -205,4 +204,18 @@ func GetCipher(cipher string) string {
 		)
 	}
 	return strings.ToLower(cipher)
+}
+
+// InList checks item in a list
+func InList(a string, list []string) bool {
+	check := 0
+	for _, b := range list {
+		if b == a {
+			check += 1
+		}
+	}
+	if check != 0 {
+		return true
+	}
+	return false
 }
