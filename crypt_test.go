@@ -4,7 +4,31 @@ import (
 	"testing"
 )
 
-// CryptEncodeDecode function
+// CryptHexEncodeDecode tests HexEncrypt and HexDecrypt functions
+func CryptHexEncodeDecode(t *testing.T) {
+	salt := "test"
+	testdata := "test data"
+	ciphers := []string{"aes", "nacl"}
+	for _, c := range ciphers {
+		edata, err := HexEncrypt(testdata, salt, c)
+		if err != nil {
+			t.Error(err.Error())
+		}
+		result, err := HexDecrypt(edata, salt, c)
+		if string(edata) != string(result) {
+			t.Errorf("HexEncrypt/HexDecrypt failure with %s cipher", c)
+		}
+		if err != nil {
+			t.Error(err.Error())
+		}
+	}
+	_, err := HexEncrypt(testdata, salt, "lsdjflksdj")
+	if err == nil {
+		t.Error("failt to recognize unsupported cipher")
+	}
+}
+
+// CryptEncodeDecode tests Encrypt and Decrypt functions
 func CryptEncodeDecode(t *testing.T) {
 	salt := "test"
 	data := []byte(salt)

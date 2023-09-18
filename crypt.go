@@ -219,3 +219,30 @@ func InList(a string, list []string) bool {
 	}
 	return false
 }
+
+// HexDecript decrypts hex encoded cipher string
+func HexDecrypt(entry, salt, cipher string) (string, error) {
+	src := []byte(entry)
+	dst := make([]byte, hex.DecodedLen(len(src)))
+	n, err := hex.Decode(dst, src)
+	if err != nil {
+		return "", err
+	}
+	data, err := Decrypt(dst[:n], salt, cipher)
+	if err != nil {
+		return "", err
+	}
+	return string(data), nil
+}
+
+// HexEncrypt entry entry into hex encoded cipher string
+func HexEncrypt(entry, salt, cipher string) (string, error) {
+	data, err := Encrypt([]byte(entry), salt, cipher)
+	if err != nil {
+		return "", err
+	}
+	// make hex string out of encrypted data
+	dst := make([]byte, hex.EncodedLen(len(data)))
+	hex.Encode(dst, data)
+	return string(dst), nil
+}
